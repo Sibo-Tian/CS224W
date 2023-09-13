@@ -2,3 +2,8 @@ dataset/
 enzymes/
 *.csv
 logs/
+acm.pkl
+.vscode/
+.DS_Store
+*.py
+practice.ipynb
