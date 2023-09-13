@@ -18,7 +18,6 @@ softmax + log + nll_loss = crossEtropyLoss
 
 nll stands for Negative Logits Likelihood, which punishes the unconfidence about the ground_truth class
 
-
 ## Colab 3
 
 Implement GraphSage based on `torch_geometric.nn.conv.MessagePassing`
@@ -35,3 +34,20 @@ Then in a MessagePassing class, the whole convolution operator is implemented by
 Take aways:
 
 - When designing pipelines, it's convinient to set the input of `train` like `train(args, dataset)`, the model and optimizer (and scheduler) can be initialized in the train function. Return loss / metric value & best_model / checkpoint in the end.
+
+## Colab 5
+
+Implement a heterogeneous GNN. 
+
+Data perspective: feature, lable, type are the most important elements for a node / edge / graph.
+
+1. Sample the graph by edge type, do GraphSage on the subgraph
+2. Take the mean or attention-based weighted sum of the embeddings calculated by different subgraph for each node
+
+Network Desigh Architecture
+
+1. HeteroGNNConv(pyg_nn.MessagePassing): Do convolution on a subgraph
+2. HeteroGNNWrapperConv(deepsnap.heterp_gnn.HeteroConv): Collect embeddings from different subgraph, and aggregate them to a single embedding
+3. HeteroGNN(torch.nn.Module): just stack all modules of GNN (GNN layer, batchNorm1d, relu)
+
+For classification tasks, use F1 score macro(mean of F1 of groups)/micro as criterion.
